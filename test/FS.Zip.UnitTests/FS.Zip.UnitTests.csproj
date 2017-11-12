@@ -7,7 +7,7 @@
 
     <AssemblyName>Soukoku.Extensions.FileProviders.Zip.UnitTests</AssemblyName>
 
-    <RootNamespace>Soukoku.Extensions.FileProviders</RootNamespace>
+    <RootNamespace>ZipTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +21,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="data\" />
+    <None Update="data\zip-with-file-no-folders.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="data\zip-with-normal-file-folders.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="data\zip-without-anything.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

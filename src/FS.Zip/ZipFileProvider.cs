@@ -21,10 +21,12 @@ namespace Soukoku.Extensions.FileProviders
         /// Initializes a new instance of the <see cref="ZipFileProvider" /> class.
         /// </summary>
         /// <param name="zipData">The zip file's data.</param>
+        /// <exception cref="ArgumentNullException">zipData</exception>
         public ZipFileProvider(byte[] zipData)
         {
+            _zipData = zipData ?? throw new ArgumentNullException(nameof(zipData));
             _defaultLastModifed = DateTimeOffset.UtcNow;
-            _zipData = zipData;
+
             using (var archive = GetArchive())
             {
                 _folderEntries = archive.ReadFolders(_defaultLastModifed);
@@ -45,10 +47,20 @@ namespace Soukoku.Extensions.FileProviders
         /// </returns>
         public IDirectoryContents GetDirectoryContents(string subpath)
         {
-            if (string.IsNullOrEmpty(subpath) && !string.Equals(subpath, "/", StringComparison.Ordinal))
+            var isRoot = string.Equals(subpath, "/", StringComparison.Ordinal);
+
+            if (string.IsNullOrEmpty(subpath) && !isRoot)
             {
                 return NotFoundDirectoryContents.Singleton;
             }
+            else if (isRoot)
+            {
+                return new ZipDirectoryContents(Enumerable.Empty<IFileInfo>());
+            }
+
+            var folder = _folderEntries
+                .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, StringComparison.OrdinalIgnoreCase));
+            if (folder == null) { return NotFoundDirectoryContents.Singleton; }
 
             using (var archive = GetArchive())
             {
@@ -80,7 +92,7 @@ namespace Soukoku.Extensions.FileProviders
             try
             {
                 file = archive.ReadFiles(_defaultLastModifed)
-                        //.Union(_folderEntries)
+                        .Union(_folderEntries)
                         .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, StringComparison.OrdinalIgnoreCase));
             }
             finally
