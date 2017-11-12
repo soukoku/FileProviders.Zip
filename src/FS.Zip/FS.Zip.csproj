@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net45;netstandard1.1</TargetFrameworks>
     <AssemblyName>Soukoku.Extensions.FileProviders.Zip</AssemblyName>
     <RootNamespace>Soukoku.Extensions.FileProviders</RootNamespace>
     <Authors>Soukoku</Authors>
@@ -12,12 +12,18 @@
     <Description>FileProviders abstraction for zip files</Description>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Soukoku.Extensions.FileProviders.Zip.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.1|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.1\Soukoku.Extensions.FileProviders.Zip.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
+    <DocumentationFile>bin\Release\net45\Soukoku.Extensions.FileProviders.Zip.xml</DocumentationFile>
   </PropertyGroup>
 
+  <!--<ItemGroup Condition="'$(TargetFramework)'=='net45'">
+    <Reference Include="System.IO.Compression"></Reference>
+  </ItemGroup>-->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="1.1.1" />
   </ItemGroup>
 
 </Project>
