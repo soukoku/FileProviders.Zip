@@ -43,7 +43,7 @@ namespace NetCoreSite
             }
 
             ConfigurePdfJsZip(app);
-            app.UseFileServer(true);
+            app.UseStaticFiles();
 
             app.UseMvc(routes =>
             {
