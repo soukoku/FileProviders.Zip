@@ -38,7 +38,7 @@ namespace Soukoku.Extensions.FileProviders
         {
             try
             {
-                return new StreamWithDisposables(_entry.Open(), _archive);
+                return new StreamWithDisposables(_entry.Open().MakeSeekable(), _archive);
             }
             catch
             {

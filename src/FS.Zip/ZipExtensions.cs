@@ -66,6 +66,30 @@ namespace Soukoku.Extensions.FileProviders
                               mode: ZipArchiveMode.Read,
                               leaveOpen: false);
 
+
+        /// <summary>
+        /// Makes the stream seekable if necessary.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns></returns>
+        public static Stream MakeSeekable(this Stream stream)
+        {
+            if (stream.CanSeek) { return stream; }
+
+            var ms = new MemoryStream();
+            try
+            {
+                stream.CopyTo(ms);
+                ms.Position = 0;
+                return new StreamWithDisposables(ms, stream);
+            }
+            catch
+            {
+                ms.Dispose();
+                throw;
+            }
+        }
+
         ///// <summary>
         ///// Generates the directory path from a full zip entry path.
         ///// </summary>

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -41,6 +42,8 @@ namespace Soukoku.Extensions.FileProviders
         /// </returns>
         public IDirectoryContents GetDirectoryContents(string subpath)
         {
+            Debug.WriteLine($"GetDirectoryContents({subpath})");
+
             var isRoot = string.Equals(subpath, "/", StringComparison.Ordinal);
 
             if (string.IsNullOrEmpty(subpath) && !isRoot)
@@ -58,11 +61,11 @@ namespace Soukoku.Extensions.FileProviders
                     return NotFoundDirectoryContents.Singleton;
                 }
 
-                var files = archive.ReadFiles(_defaultLastModifed)
-                                .Union(_folderEntries)
-                                .Where(entry => string.Equals(Path.GetDirectoryName(entry.PhysicalPath), subpath, StringComparison.OrdinalIgnoreCase))
+                var all = archive.ReadFiles(_defaultLastModifed)
+                                .Union(_folderEntries);
+                var matchItems = all.Where(entry => string.Equals(Path.GetDirectoryName(entry.PhysicalPath).Replace('\\', '/'), subpath, StringComparison.OrdinalIgnoreCase))
                                 .ToList();
-                return new ZipDirectoryContents(files);
+                return new ZipDirectoryContents(matchItems);
             }
         }
 
@@ -76,6 +79,8 @@ namespace Soukoku.Extensions.FileProviders
         /// <exception cref="NotFoundFileInfo"></exception>
         public IFileInfo GetFileInfo(string subpath)
         {
+            Debug.WriteLine($"GetFileInfo({subpath})");
+
             var isRoot = string.Equals(subpath, "/", StringComparison.Ordinal);
 
             if (string.IsNullOrEmpty(subpath))

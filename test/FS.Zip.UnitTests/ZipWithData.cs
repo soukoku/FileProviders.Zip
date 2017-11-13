@@ -117,5 +117,7 @@ namespace ZipTests
             var result = provider.GetFileInfo("/bad folder/");
             Assert.False(result.Exists, "Somehow exists.");
         }
+
+        // TODO: add tests for > 1 subfolder levels
     }
 }
