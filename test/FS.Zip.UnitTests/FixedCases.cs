@@ -16,7 +16,7 @@ namespace ZipTests
         [Fact]
         public void Watch_Always_Returns_NullChangeToken()
         {
-            var provider = new ZipFileProvider(TestData.Standard_Zip_File);
+            var provider = new ZipFileProvider(TestData.No_Data_Zip_File);
 
             // prolly a bad test case but anyway
             var result = provider.Watch(null);
@@ -35,7 +35,7 @@ namespace ZipTests
         [Fact]
         public void GetDirectoryContents_Given_null_Or_Empty_Returns_Not_Exists()
         {
-            var provider = new ZipFileProvider(TestData.Standard_Zip_File);
+            var provider = new ZipFileProvider(TestData.No_Data_Zip_File);
 
             var result = provider.GetDirectoryContents(null);
             Assert.False(result.Exists, "Says exists.");
@@ -47,7 +47,7 @@ namespace ZipTests
         [Fact]
         public void GetFileInfo_Given_null_Or_Empty_Returns_Not_Exists()
         {
-            var provider = new ZipFileProvider(TestData.Standard_Zip_File);
+            var provider = new ZipFileProvider(TestData.No_Data_Zip_File);
 
             var result = provider.GetFileInfo(null);
             Assert.False(result.Exists, "Says exists.");
@@ -59,7 +59,7 @@ namespace ZipTests
         [Fact]
         public void GetFileInfo_Given_Root_Exists()
         {
-            var provider = new ZipFileProvider(TestData.Standard_Zip_File);
+            var provider = new ZipFileProvider(TestData.No_Data_Zip_File);
 
             var result = provider.GetFileInfo("/");
             Assert.True(result.Exists, "Root don't exist.");

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 
 namespace Soukoku.Extensions.FileProviders
@@ -27,16 +26,11 @@ namespace Soukoku.Extensions.FileProviders
             _zipData = zipData ?? throw new ArgumentNullException(nameof(zipData));
             _defaultLastModifed = DateTimeOffset.UtcNow;
 
-            using (var archive = GetArchive())
+            using (var archive = _zipData.GetArchive())
             {
                 _folderEntries = archive.ReadFolders(_defaultLastModifed);
             }
         }
-
-        private ZipArchive GetArchive()
-            => new ZipArchive(stream: new MemoryStream(_zipData),
-                              mode: ZipArchiveMode.Read,
-                              leaveOpen: false);
 
         /// <summary>
         /// Enumerate a directory at the given path, if any.
@@ -55,7 +49,7 @@ namespace Soukoku.Extensions.FileProviders
             }
 
             subpath = subpath.Trim('/');
-            using (var archive = GetArchive())
+            using (var archive = _zipData.GetArchive())
             {
                 var folder = _folderEntries
                     .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, StringComparison.OrdinalIgnoreCase));
@@ -66,7 +60,7 @@ namespace Soukoku.Extensions.FileProviders
 
                 var files = archive.ReadFiles(_defaultLastModifed)
                                 .Union(_folderEntries)
-                                .Where(entry => string.Equals(entry.PhysicalPath.GetZipDirectoryPath(), subpath, StringComparison.OrdinalIgnoreCase))
+                                .Where(entry => string.Equals(Path.GetDirectoryName(entry.PhysicalPath), subpath, StringComparison.OrdinalIgnoreCase))
                                 .ToList();
                 return new ZipDirectoryContents(files);
             }
@@ -95,7 +89,7 @@ namespace Soukoku.Extensions.FileProviders
 
             subpath = subpath.Trim('/');
 
-            ZipArchive archive = GetArchive();
+            var archive = _zipData.GetArchive();
             IFileInfo file = null;
             try
             {
@@ -120,9 +114,6 @@ namespace Soukoku.Extensions.FileProviders
         /// <returns>
         /// A <see cref="NullChangeToken"/>.
         /// </returns>
-        public IChangeToken Watch(string filter)
-        {
-            return NullChangeToken.Singleton;
-        }
+        public IChangeToken Watch(string filter) => NullChangeToken.Singleton;
     }
 }
