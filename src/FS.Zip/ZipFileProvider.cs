@@ -53,17 +53,17 @@ namespace Soukoku.Extensions.FileProviders
             {
                 return NotFoundDirectoryContents.Singleton;
             }
-            else if (isRoot)
-            {
-                return new ZipDirectoryContents(Enumerable.Empty<IFileInfo>());
-            }
 
-            var folder = _folderEntries
-                .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, StringComparison.OrdinalIgnoreCase));
-            if (folder == null) { return NotFoundDirectoryContents.Singleton; }
-
+            subpath = subpath.Trim('/');
             using (var archive = GetArchive())
             {
+                var folder = _folderEntries
+                    .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, StringComparison.OrdinalIgnoreCase));
+                if (folder == null && !isRoot)
+                {
+                    return NotFoundDirectoryContents.Singleton;
+                }
+
                 var files = archive.ReadFiles(_defaultLastModifed)
                                 .Union(_folderEntries)
                                 .Where(entry => string.Equals(entry.PhysicalPath.GetZipDirectoryPath(), subpath, StringComparison.OrdinalIgnoreCase))
@@ -82,10 +82,18 @@ namespace Soukoku.Extensions.FileProviders
         /// <exception cref="NotFoundFileInfo"></exception>
         public IFileInfo GetFileInfo(string subpath)
         {
+            var isRoot = string.Equals(subpath, "/", StringComparison.Ordinal);
+
             if (string.IsNullOrEmpty(subpath))
             {
                 return new NotFoundFileInfo(subpath);
             }
+            else if (isRoot)
+            {
+                return new DummyZipDirectoryInfo("", _defaultLastModifed);
+            }
+
+            subpath = subpath.Trim('/');
 
             ZipArchive archive = GetArchive();
             IFileInfo file = null;

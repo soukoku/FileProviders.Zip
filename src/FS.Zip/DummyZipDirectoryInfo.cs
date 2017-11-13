@@ -37,5 +37,7 @@ namespace Soukoku.Extensions.FileProviders
         {
             throw new NotSupportedException();
         }
+
+        public override string ToString() => PhysicalPath;
     }
 }

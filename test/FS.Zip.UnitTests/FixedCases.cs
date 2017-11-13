@@ -55,5 +55,15 @@ namespace ZipTests
             result = provider.GetFileInfo("");
             Assert.False(result.Exists, "Says exists.");
         }
+
+        [Fact]
+        public void GetFileInfo_Given_Root_Exists()
+        {
+            var provider = new ZipFileProvider(TestData.Standard_Zip_File);
+
+            var result = provider.GetFileInfo("/");
+            Assert.True(result.Exists, "Root don't exist.");
+            Assert.True(result.IsDirectory, "Not a folder");
+        }
     }
 }

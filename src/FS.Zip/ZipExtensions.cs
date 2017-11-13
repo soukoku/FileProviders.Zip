@@ -32,9 +32,13 @@ namespace Soukoku.Extensions.FileProviders
             // why need this?, cuz some zip files don't actually have folder entries
             // so just always make them ourselves based on file paths.
             => archive.Entries
-                .Where(e => !e.IsDirectory())
-                .Select(e => Path.GetDirectoryName(e.FullName))
-                .Where(path => !string.IsNullOrEmpty(path))
+                .Where(e=>e.IsDirectory())
+                .Select(e=>Path.GetDirectoryName(e.FullName))
+                // union real folders entries with calculated folders from files
+                .Union(archive.Entries
+                        .Where(e => !e.IsDirectory())
+                        .Select(e => Path.GetDirectoryName(e.FullName))
+                        .Where(path => !string.IsNullOrEmpty(path)))
                 .Distinct()
                 .Select(path => (IFileInfo)new DummyZipDirectoryInfo(path, lastModified))
                 .ToList();

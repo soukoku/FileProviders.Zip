@@ -7,16 +7,7 @@ namespace ZipTests
     public class EmptyZip
     {
         [Fact]
-        public void GetDirectoryContents_Passed_Root_Exists()
-        {
-            var provider = new ZipFileProvider(TestData.Empty_Zip_File);
-
-            var result = provider.GetDirectoryContents("/");
-            Assert.True(result.Exists, "Didn't exist.");
-        }
-
-        [Fact]
-        public void GetDirectoryContents_Given_Root_Exists_With_Zero_Files()
+        public void GetDirectoryContents_Given_Root_Exists_With_No_Files()
         {
             var provider = new ZipFileProvider(TestData.Empty_Zip_File);
 
@@ -41,14 +32,11 @@ namespace ZipTests
         }
 
         [Fact]
-        public void GetFileInfo_Always_Returns_Not_Exists()
+        public void GetFileInfo_Always_Returns_Not_Exists_For_Non_Root_Paths()
         {
             var provider = new ZipFileProvider(TestData.Empty_Zip_File);
 
-            var result = provider.GetFileInfo("/");
-            Assert.False(result.Exists, "Says exists.");
-
-            result = provider.GetFileInfo("/file");
+            var result = provider.GetFileInfo("/file");
             Assert.False(result.Exists, "Says exists.");
 
             result = provider.GetFileInfo("/folder/");
