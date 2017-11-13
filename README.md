@@ -1,6 +1,6 @@
 # About
 Allows using zip files as FS provider for aspnet core's static files abstractions. 
-A single zip file can server as a root file system when used this way.
+A single zip file can serve as a root file system when used this way.
 
 # Getting It
 In an asp.net core project, install its NuGet package with
