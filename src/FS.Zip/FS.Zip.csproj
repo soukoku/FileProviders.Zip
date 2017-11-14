@@ -10,6 +10,8 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/soukoku/FileProviders.Zip/master/LICENSE</PackageLicenseUrl>
     <Product>Zip FileProvider</Product>
     <Description>Allows using zip files as FS provider for aspnet core's static files abstractions.</Description>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.1|AnyCPU'">
@@ -19,9 +21,9 @@
     <DocumentationFile>bin\Release\net45\Soukoku.Extensions.FileProviders.Zip.xml</DocumentationFile>
   </PropertyGroup>
 
-  <!--<ItemGroup Condition="'$(TargetFramework)'=='net45'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net45'">
     <Reference Include="System.IO.Compression"></Reference>
-  </ItemGroup>-->
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="1.1.1" />
   </ItemGroup>

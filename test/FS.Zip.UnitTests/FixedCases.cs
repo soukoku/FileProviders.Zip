@@ -57,13 +57,12 @@ namespace ZipTests
         }
 
         [Fact]
-        public void GetFileInfo_Given_Root_Exists()
+        public void GetFileInfo_Given_Root_Dont_Exist()
         {
             var provider = new ZipFileProvider(TestData.No_Data_Zip_File);
 
             var result = provider.GetFileInfo("/");
-            Assert.True(result.Exists, "Root don't exist.");
-            Assert.True(result.IsDirectory, "Not a folder");
+            Assert.False(result.Exists, "Root returned for file.");
         }
     }
 }

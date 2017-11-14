@@ -118,35 +118,32 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetFileInfo_For_Real_Top_Folder_With_Files_Works(byte[] zipData)
+        public void GetFileInfo_For_Real_Top_Folder_With_Files_Dont_Exist(byte[] zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
             var result = provider.GetFileInfo("/folder with files/");
-            Assert.True(result.Exists, "Folder don't exist.");
-            Assert.True(result.IsDirectory, "Not a folder");
+            Assert.False(result.Exists, "Folder exists.");
         }
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetFileInfo_For_Real_Top_Folder_Without_Files_Works(byte[] zipData)
+        public void GetFileInfo_For_Real_Top_Folder_Without_Files_Dont_Exist(byte[] zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
             var result = provider.GetFileInfo("/folder without files/");
-            Assert.True(result.Exists, "Folder don't exist.");
-            Assert.True(result.IsDirectory, "Not a folder");
+            Assert.False(result.Exists, "Folder exists.");
         }
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetFileInfo_For_Real_Sub_Folder_Works(byte[] zipData)
+        public void GetFileInfo_For_Real_Sub_Folder_Dont_Exist(byte[] zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
             var result = provider.GetFileInfo("/folder with files/sub folder");
-            Assert.True(result.Exists, "Folder don't exist.");
-            Assert.True(result.IsDirectory, "Not a folder");
+            Assert.False(result.Exists, "Folder exists.");
         }
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]

@@ -13,7 +13,6 @@ namespace Soukoku.Extensions.FileProviders
     /// </summary>
     public class ZipFileProvider : IFileProvider
     {
-        DateTimeOffset _defaultLastModifed;
         private byte[] _zipData;
         IList<IFileInfo> _folderEntries;
 
@@ -25,11 +24,10 @@ namespace Soukoku.Extensions.FileProviders
         public ZipFileProvider(byte[] zipData)
         {
             _zipData = zipData ?? throw new ArgumentNullException(nameof(zipData));
-            _defaultLastModifed = DateTimeOffset.UtcNow;
 
             using (var archive = _zipData.GetArchive())
             {
-                _folderEntries = archive.ReadFolders(_defaultLastModifed);
+                _folderEntries = archive.ReadFolders();
             }
         }
 
@@ -44,24 +42,21 @@ namespace Soukoku.Extensions.FileProviders
         {
             Debug.WriteLine($"GetDirectoryContents({subpath})");
 
+            if (string.IsNullOrEmpty(subpath)) { return NotFoundDirectoryContents.Singleton; }
+
             var isRoot = string.Equals(subpath, "/", StringComparison.Ordinal);
 
-            if (string.IsNullOrEmpty(subpath) && !isRoot)
+            subpath = subpath.Trim('/');
+            var folder = _folderEntries
+                .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, StringComparison.OrdinalIgnoreCase));
+            if (folder == null && !isRoot)
             {
                 return NotFoundDirectoryContents.Singleton;
             }
 
-            subpath = subpath.Trim('/');
             using (var archive = _zipData.GetArchive())
             {
-                var folder = _folderEntries
-                    .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, StringComparison.OrdinalIgnoreCase));
-                if (folder == null && !isRoot)
-                {
-                    return NotFoundDirectoryContents.Singleton;
-                }
-
-                var all = archive.ReadFiles(_defaultLastModifed)
+                var all = archive.ReadFiles()
                                 .Union(_folderEntries);
                 var matchItems = all.Where(entry => string.Equals(Path.GetDirectoryName(entry.PhysicalPath).Replace('\\', '/'), subpath, StringComparison.OrdinalIgnoreCase))
                                 .ToList();
@@ -83,13 +78,9 @@ namespace Soukoku.Extensions.FileProviders
 
             var isRoot = string.Equals(subpath, "/", StringComparison.Ordinal);
 
-            if (string.IsNullOrEmpty(subpath))
+            if (string.IsNullOrEmpty(subpath) || isRoot)
             {
                 return new NotFoundFileInfo(subpath);
-            }
-            else if (isRoot)
-            {
-                return new DummyZipDirectoryInfo("", _defaultLastModifed);
             }
 
             subpath = subpath.Trim('/');
@@ -98,8 +89,7 @@ namespace Soukoku.Extensions.FileProviders
             IFileInfo file = null;
             try
             {
-                file = archive.ReadFiles(_defaultLastModifed)
-                        .Union(_folderEntries)
+                file = archive.ReadFiles()
                         .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, StringComparison.OrdinalIgnoreCase));
             }
             finally

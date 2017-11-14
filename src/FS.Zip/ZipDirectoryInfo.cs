@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.FileProviders;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 
 namespace Soukoku.Extensions.FileProviders
 {
@@ -8,22 +10,28 @@ namespace Soukoku.Extensions.FileProviders
     /// A folder <see cref="IFileInfo"/> that's manually generated.
     /// </summary>
     /// <seealso cref="Microsoft.Extensions.FileProviders.IFileInfo" />
-    class DummyZipDirectoryInfo : IFileInfo
+    class ZipDirectoryInfo : IFileInfo
     {
         private string _path;
         private string _name;
         private DateTimeOffset _modified;
 
-        public DummyZipDirectoryInfo(string path, DateTimeOffset modified)
+        public ZipDirectoryInfo(ZipArchiveEntry entry)
         {
-            _path = path.Replace('\\', '/');
+            _modified = entry.LastWriteTime;
+            _path = Path.GetDirectoryName(entry.FullName).Replace('\\', '/');
             _name = Path.GetFileName(_path);
-            _modified = modified;
+        }
+
+        public ZipDirectoryInfo(string path)
+        {
+            _name = Path.GetFileName(_path) ?? string.Empty;
+            _path = path.Replace('\\', '/');
         }
 
         public bool Exists => true;
 
-        public long Length => 0;
+        public long Length => -1;
 
         public string PhysicalPath => _path;
 
@@ -35,7 +43,7 @@ namespace Soukoku.Extensions.FileProviders
 
         public Stream CreateReadStream()
         {
-            throw new NotSupportedException();
+            throw new InvalidOperationException("Cannot create a stream for a directory.");
         }
 
         public override string ToString() => PhysicalPath;

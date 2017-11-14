@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Soukoku.Extensions.FileProviders;
 using System.IO;
-using Microsoft.Extensions.PlatformAbstractions;
 
 namespace NetCoreSite
 {
@@ -42,7 +36,8 @@ namespace NetCoreSite
                 app.UseExceptionHandler("/Error");
             }
 
-            ConfigurePdfJsZip(app);
+            ConfigurePdfJsZip(app, env);
+            
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
@@ -53,17 +48,34 @@ namespace NetCoreSite
             });
         }
 
-        private void ConfigurePdfJsZip(IApplicationBuilder app)
+        private void ConfigurePdfJsZip(IApplicationBuilder app, IHostingEnvironment env)
         {
-            var zipFile = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "pdfjs-1.9.426-dist.zip");
+            var zipFile = Path.Combine(env.ContentRootPath, "pdfjs-1.9.426-dist.zip");
             var provider = new ZipFileProvider(File.ReadAllBytes(zipFile));
-            
-            app.UseFileServer(new FileServerOptions()
+
+            app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = provider,
                 RequestPath = "/pdfjs",
-                EnableDirectoryBrowsing = true
+
+                // following are required for extension-less files
+                ServeUnknownFileTypes = true,
+                DefaultContentType = "text/plain"
             });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = provider,
+                RequestPath = "/pdfjs",
+            });
+
+
+            //app.UseFileServer(new FileServerOptions()
+            //{
+            //    FileProvider = provider,
+            //    RequestPath = "/pdfjs",
+            //    EnableDirectoryBrowsing = true,
+            //});
         }
     }
 }

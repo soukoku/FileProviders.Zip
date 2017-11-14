@@ -26,21 +26,21 @@ namespace Soukoku.Extensions.FileProviders
         /// Generate all folder entries of a zip archive.
         /// </summary>
         /// <param name="archive">The archive.</param>
-        /// <param name="lastModified">The last modified value to use.</param>
         /// <returns></returns>
-        public static IList<IFileInfo> ReadFolders(this ZipArchive archive, DateTimeOffset lastModified)
+        public static IList<IFileInfo> ReadFolders(this ZipArchive archive)
             // why need this?, cuz some zip files don't actually have folder entries (ZipFile.CreateFromDirectory does this)
             // so always remake them ourselves based on file paths.
             => archive.Entries
                 .Where(e => e.IsDirectory())
-                .Select(e => Path.GetDirectoryName(e.FullName))
+                .Select(e => new ZipDirectoryInfo(e))
                 // union real folders entries with calculated folders from files
                 .Union(archive.Entries
                         .Where(e => !e.IsDirectory())
                         .Select(e => Path.GetDirectoryName(e.FullName))
-                        .Where(path => !string.IsNullOrEmpty(path)))
-                .Distinct()
-                .Select(path => (IFileInfo)new DummyZipDirectoryInfo(path, lastModified))
+                        .Where(path => !string.IsNullOrEmpty(path))
+                        .Select(p => new ZipDirectoryInfo(p)))
+                .Distinct(PhyPathEqualityComparer.Instance)
+                .Cast<IFileInfo>()
                 .ToList();
 
 
@@ -48,9 +48,8 @@ namespace Soukoku.Extensions.FileProviders
         /// Reads only the file entries from the zip archive.
         /// </summary>
         /// <param name="archive">The archive.</param>
-        /// <param name="lastModified">The last modified.</param>
         /// <returns></returns>
-        public static IEnumerable<IFileInfo> ReadFiles(this ZipArchive archive, DateTimeOffset lastModified)
+        public static IEnumerable<IFileInfo> ReadFiles(this ZipArchive archive)
             => archive.Entries
                 .Where(e => !e.IsDirectory())
                 .Select(e => new ZipEntryFileInfo(e, archive));

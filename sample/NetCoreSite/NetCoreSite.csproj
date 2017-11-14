@@ -11,9 +11,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\FS.Zip\FS.Zip.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Update="pdfjs-1.9.426-dist.zip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>
