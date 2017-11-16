@@ -1,5 +1,5 @@
 # About
-Allows using zip files as FS provider for aspnet core's static files abstractions. 
+Allows using zip files as FS provider for aspnet core's static files middleware. 
 A single zip file can serve as a root file system when used this way.
 
 
@@ -20,7 +20,7 @@ Assuming there's a zip file you want to load, you can do something like the foll
 
 public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 {
-  var zipProvider = new ZipFileProvider(File.ReadAllBytes(@"path\to\my\zip-file.zip"));
+  var zipProvider = new ZipFileProvider(@"path\to\my\zip-file.zip");
 
   app.UseFileServer(new FileServerOptions()
   {

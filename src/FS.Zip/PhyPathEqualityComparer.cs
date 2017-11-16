@@ -4,17 +4,26 @@ using System.Collections.Generic;
 
 namespace Soukoku.Extensions.FileProviders
 {
-    class PhyPathEqualityComparer : IEqualityComparer<IFileInfo>
+    class PhyPathEqualityComparer : IEqualityComparer<ZipEntryInfo>
     {
-        public static IEqualityComparer<ZipDirectoryInfo> Instance { get; } = new PhyPathEqualityComparer();
+        private StringComparison _comparison;
 
-        public bool Equals(IFileInfo x, IFileInfo y)
+
+        public PhyPathEqualityComparer(StringComparison comparison)
         {
-            return string.Equals(x.PhysicalPath, y.PhysicalPath, StringComparison.OrdinalIgnoreCase);
+            _comparison = comparison;
         }
 
-        public int GetHashCode(IFileInfo obj)
+        public bool Equals(ZipEntryInfo x, ZipEntryInfo y)
         {
+            return string.Equals(x.PhysicalPath, y.PhysicalPath, _comparison);
+        }
+
+        public int GetHashCode(ZipEntryInfo obj)
+        {
+            if (_comparison == StringComparison.Ordinal)
+                return obj.PhysicalPath.GetHashCode();
+
             return obj.PhysicalPath.ToUpperInvariant().GetHashCode();
         }
     }

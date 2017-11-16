@@ -51,7 +51,7 @@ namespace NetCoreSite
         private void ConfigurePdfJsZip(IApplicationBuilder app, IHostingEnvironment env)
         {
             var zipFile = Path.Combine(env.ContentRootPath, "pdfjs-1.9.426-dist.zip");
-            var provider = new ZipFileProvider(File.ReadAllBytes(zipFile));
+            var provider = new ZipFileProvider(zipFile);
 
             app.UseStaticFiles(new StaticFileOptions
             {

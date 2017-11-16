@@ -14,20 +14,33 @@ namespace Soukoku.Extensions.FileProviders
     public class ZipFileProvider : IFileProvider
     {
         private byte[] _zipData;
-        IList<IFileInfo> _folderEntries;
+        IList<ZipEntryInfo> _folderEntries;
+        StringComparison _comparison;
 
+#if !NETSTD11
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZipFileProvider" /> class.
+        /// </summary>
+        /// <param name="zipFilePath">The zip file path.</param>
+        /// <param name="caseSensitive">if set to <c>true</c> then path comparisons will be case sensitive.</param>
+        public ZipFileProvider(string zipFilePath, bool caseSensitive = false) : this(File.ReadAllBytes(zipFilePath), caseSensitive)
+        {
+
+        }
+#endif
         /// <summary>
         /// Initializes a new instance of the <see cref="ZipFileProvider" /> class.
         /// </summary>
         /// <param name="zipData">The zip file's data.</param>
-        /// <exception cref="ArgumentNullException">zipData</exception>
-        public ZipFileProvider(byte[] zipData)
+        /// <param name="caseSensitive">if set to <c>true</c> then path comparisons will be case sensitive.</param>
+        /// <exception cref="System.ArgumentNullException">zipData</exception>
+        public ZipFileProvider(byte[] zipData, bool caseSensitive = false)
         {
             _zipData = zipData ?? throw new ArgumentNullException(nameof(zipData));
-
+            _comparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
             using (var archive = _zipData.GetArchive())
             {
-                _folderEntries = archive.ReadFolders();
+                _folderEntries = archive.ReadFolders(_comparison);
             }
         }
 
@@ -48,7 +61,7 @@ namespace Soukoku.Extensions.FileProviders
 
             subpath = subpath.Trim('/');
             var folder = _folderEntries
-                .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, _comparison));
             if (folder == null && !isRoot)
             {
                 return NotFoundDirectoryContents.Singleton;
@@ -58,7 +71,7 @@ namespace Soukoku.Extensions.FileProviders
             {
                 var all = archive.ReadFiles()
                                 .Union(_folderEntries);
-                var matchItems = all.Where(entry => string.Equals(Path.GetDirectoryName(entry.PhysicalPath).Replace('\\', '/'), subpath, StringComparison.OrdinalIgnoreCase))
+                var matchItems = all.Where(entry => string.Equals(Path.GetDirectoryName(entry.PhysicalPath).Replace('\\', '/'), subpath, _comparison))
                                 .ToList();
                 return new ZipDirectoryContents(matchItems);
             }
@@ -90,7 +103,7 @@ namespace Soukoku.Extensions.FileProviders
             try
             {
                 file = archive.ReadFiles()
-                        .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, StringComparison.OrdinalIgnoreCase));
+                        .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, _comparison));
             }
             finally
             {

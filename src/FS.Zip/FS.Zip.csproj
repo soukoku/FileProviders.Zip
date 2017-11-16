@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.1</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard1.1;netstandard1.3</TargetFrameworks>
     <AssemblyName>Soukoku.Extensions.FileProviders.Zip</AssemblyName>
     <RootNamespace>Soukoku.Extensions.FileProviders</RootNamespace>
     <Authors>Soukoku</Authors>
@@ -9,16 +9,22 @@
     <PackageProjectUrl>https://github.com/soukoku/FileProviders.Zip</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/soukoku/FileProviders.Zip/master/LICENSE</PackageLicenseUrl>
     <Product>Zip FileProvider</Product>
-    <Description>Allows using zip files as FS provider for aspnet core's static files abstractions.</Description>
-    <Version>1.0.1</Version>
+    <Description>Allows using zip files as FS provider for aspnet core's static files middleware.</Description>
+    <Version>1.1.0</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.1\Soukoku.Extensions.FileProviders.Zip.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.3|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.3\Soukoku.Extensions.FileProviders.Zip.xml</DocumentationFile>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
     <DocumentationFile>bin\Release\net45\Soukoku.Extensions.FileProviders.Zip.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.1'">
+    <DefineConstants>NETSTD11</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net45'">

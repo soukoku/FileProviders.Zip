@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.FileProviders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -27,20 +26,19 @@ namespace Soukoku.Extensions.FileProviders
         /// </summary>
         /// <param name="archive">The archive.</param>
         /// <returns></returns>
-        public static IList<IFileInfo> ReadFolders(this ZipArchive archive)
+        public static IList<ZipEntryInfo> ReadFolders(this ZipArchive archive, StringComparison comparison)
             // why need this?, cuz some zip files don't actually have folder entries (ZipFile.CreateFromDirectory does this)
             // so always remake them ourselves based on file paths.
             => archive.Entries
                 .Where(e => e.IsDirectory())
-                .Select(e => new ZipDirectoryInfo(e))
+                .Select(e => new ZipEntryInfo(e))
                 // union real folders entries with calculated folders from files
                 .Union(archive.Entries
                         .Where(e => !e.IsDirectory())
                         .Select(e => Path.GetDirectoryName(e.FullName))
                         .Where(path => !string.IsNullOrEmpty(path))
-                        .Select(p => new ZipDirectoryInfo(p)))
-                .Distinct(PhyPathEqualityComparer.Instance)
-                .Cast<IFileInfo>()
+                        .Select(p => new ZipEntryInfo(p)))
+                .Distinct(new PhyPathEqualityComparer(comparison))
                 .ToList();
 
 
@@ -49,10 +47,10 @@ namespace Soukoku.Extensions.FileProviders
         /// </summary>
         /// <param name="archive">The archive.</param>
         /// <returns></returns>
-        public static IEnumerable<IFileInfo> ReadFiles(this ZipArchive archive)
+        public static IEnumerable<ZipEntryInfo> ReadFiles(this ZipArchive archive)
             => archive.Entries
                 .Where(e => !e.IsDirectory())
-                .Select(e => new ZipEntryFileInfo(e, archive));
+                .Select(e => new ZipEntryInfo(e));
 
 
         /// <summary>
@@ -88,22 +86,5 @@ namespace Soukoku.Extensions.FileProviders
                 throw;
             }
         }
-
-        ///// <summary>
-        ///// Generates the directory path from a full zip entry path.
-        ///// </summary>
-        ///// <param name="zipEntryFullPath">The zip entry full path.</param>
-        ///// <returns></returns>
-        //public static string GetZipDirectoryPath(this string zipEntryFullPath)
-        //{
-        //    // can't use Path.GetDirectoryName since we need '/'
-        //    var trimmed = zipEntryFullPath.Trim('/');
-        //    var idx = trimmed.LastIndexOf('/');
-        //    if (idx > -1)
-        //    {
-        //        return trimmed.Substring(0, idx);
-        //    }
-        //    return string.Empty;
-        //}
     }
 }
