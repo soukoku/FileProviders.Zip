@@ -1,11 +1,13 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "PDF.js Demo";
 }
-
-<div class="row" style="margin-top:10px;">
-    <div class="col-sm-6">
-        <p>This site tests the zip file provider. See the <a href="pdfjs">PDF.js folder</a>.</p>
+<div class="full-height has-info-line">
+    <div class="alert alert-warning full-width info-line">
+        Below is the <a target="_blank" href="https://mozilla.github.io/pdf.js/">PDF.js</a> distribution.
+    </div>
+    <div class="full-height">
+        <iframe src="pdfjs" class="full-height full-width"></iframe>
     </div>
 </div>

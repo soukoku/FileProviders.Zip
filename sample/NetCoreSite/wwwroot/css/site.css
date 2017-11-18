@@ -1,35 +1,47 @@
-body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+html, body, .full-height {
+    height: 100%;
+    overflow: hidden;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
+.full-width {
     width: 100%;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+body {
+    padding-top: 50px;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+.v-scroll {
+    overflow-y: auto;
 }
+
+.h-scroll {
+    overflow-x: auto;
+}
+
+.info-line {
+    margin-bottom: 0;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.has-info-line {
+    position: relative;
+    padding-top: 50px;
+}
+
+iframe {
+    border: none;
+}
+
+.navbar-text a {
+    color: #d5d8d8;
+    text-decoration: underline;
+}
+
+    .navbar-text a:active,
+    .navbar-text a:hover {
+        color: #fff;
+    }

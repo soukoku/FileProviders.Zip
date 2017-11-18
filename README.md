@@ -1,12 +1,14 @@
 # About
-Allows using zip files as FS provider for aspnet core's static files middleware. 
+Allows using zip files as FS provider for aspnet core's 
+[StaticFiles middleware](https://github.com/aspnet/StaticFiles). 
 A single zip file can serve as a root file system when used this way.
 
 
 # Getting It
-In an asp.net core project, install its NuGet package with
+In an asp.net core project, install its 
+[NuGet package](https://www.nuget.org/packages/Soukoku.Extensions.FileProviders.Zip/) with
 
-```cmd
+```bat
 Install-Package Soukoku.Extensions.FileProviders.Zip 
 ```
 
@@ -14,7 +16,7 @@ Install-Package Soukoku.Extensions.FileProviders.Zip
 # Example
 Assuming there's a zip file you want to load, you can do something like the following
 
-```cs
+```csharp
 
 // inside the Startup.cs
 
