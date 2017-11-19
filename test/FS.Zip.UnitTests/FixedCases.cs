@@ -10,7 +10,8 @@ namespace ZipTests
         [Fact]
         public void Ctor_When_Given_null_Throws_ArgNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => new ZipFileProvider(null));
+            Assert.Throws<ArgumentNullException>(() => new ZipFileProvider((string)null));
+            Assert.Throws<ArgumentNullException>(() => new ZipFileProvider((byte[])null));
         }
 
         [Fact]

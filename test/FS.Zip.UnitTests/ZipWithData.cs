@@ -14,8 +14,9 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetDirectoryContents_Given_Root_Exists_With_Files(byte[] zipData)
+        public void GetDirectoryContents_Given_Root_Exists_With_Files(string zipData)
         {
+            Assert.True(false, "Test");
             var provider = new ZipFileProvider(zipData);
 
             var result = provider.GetDirectoryContents("/");
@@ -25,7 +26,7 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetDirectoryContents_Given_Top_Folder_With_Files_Works(byte[] zipData)
+        public void GetDirectoryContents_Given_Top_Folder_With_Files_Works(string zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
@@ -36,7 +37,7 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetDirectoryContents_Given_Top_Folder_Without_Files_Works(byte[] zipData)
+        public void GetDirectoryContents_Given_Top_Folder_Without_Files_Works(string zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
@@ -47,7 +48,7 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetDirectoryContents_Given_Sub_Folder_With_Files_Works(byte[] zipData)
+        public void GetDirectoryContents_Given_Sub_Folder_With_Files_Works(string zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
@@ -58,7 +59,7 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetDirectoryContents_Given_Bad_Folder_Path_Returns_no_exists(byte[] zipData)
+        public void GetDirectoryContents_Given_Bad_Folder_Path_Returns_no_exists(string zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
@@ -79,7 +80,7 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetFileInfo_For_Real_File_In_Root_Works(byte[] zipData)
+        public void GetFileInfo_For_Real_File_In_Root_Works(string zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
@@ -96,7 +97,7 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetFileInfo_For_Real_File_In_TopFolder_Works(byte[] zipData)
+        public void GetFileInfo_For_Real_File_In_TopFolder_Works(string zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
@@ -108,7 +109,7 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetFileInfo_For_Bad_File_No_Exist(byte[] zipData)
+        public void GetFileInfo_For_Bad_File_No_Exist(string zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
@@ -118,7 +119,7 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetFileInfo_For_Real_Top_Folder_With_Files_Dont_Exist(byte[] zipData)
+        public void GetFileInfo_For_Real_Top_Folder_With_Files_Dont_Exist(string zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
@@ -128,7 +129,7 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetFileInfo_For_Real_Top_Folder_Without_Files_Dont_Exist(byte[] zipData)
+        public void GetFileInfo_For_Real_Top_Folder_Without_Files_Dont_Exist(string zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
@@ -138,7 +139,7 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetFileInfo_For_Real_Sub_Folder_Dont_Exist(byte[] zipData)
+        public void GetFileInfo_For_Real_Sub_Folder_Dont_Exist(string zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
@@ -148,7 +149,7 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetFileInfo_For_Real_File_In_SubFolder_Works(byte[] zipData)
+        public void GetFileInfo_For_Real_File_In_SubFolder_Works(string zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
@@ -160,7 +161,7 @@ namespace ZipTests
 
         [MemberData(nameof(TestData.With_Data_Zip_Files), MemberType = typeof(TestData))]
         [Theory]
-        public void GetFileInfo_For_Bad_Folder_No_Exist(byte[] zipData)
+        public void GetFileInfo_For_Bad_Folder_No_Exist(string zipData)
         {
             var provider = new ZipFileProvider(zipData);
 
