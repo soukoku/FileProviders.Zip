@@ -10,8 +10,10 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/soukoku/FileProviders.Zip/master/LICENSE</PackageLicenseUrl>
     <Product>Zip FileProvider</Product>
     <Description>Allows using zip files as FS provider for aspnet core's static files middleware.</Description>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <PackageTags>files fileprovider</PackageTags>
+    <PackageIconUrl>https://github.com/soukoku/FileProviders.Zip/raw/master/external/icon.png</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.1|AnyCPU'">

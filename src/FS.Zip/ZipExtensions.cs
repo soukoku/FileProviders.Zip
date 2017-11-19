@@ -27,7 +27,8 @@ namespace Soukoku.Extensions.FileProviders
         /// <param name="archive">The archive.</param>
         /// <returns></returns>
         public static IList<ZipEntryInfo> ReadFolders(this ZipArchive archive, StringComparison comparison)
-            // why need this?, cuz some zip files don't actually have folder entries (ZipFile.CreateFromDirectory does this)
+            // why need this?, cuz some zip files don't actually have folder entries 
+            // (ZipFile.CreateFromDirectory can create this)
             // so always remake them ourselves based on file paths.
             => archive.Entries
                 .Where(e => e.IsDirectory())
@@ -78,12 +79,16 @@ namespace Soukoku.Extensions.FileProviders
             {
                 stream.CopyTo(ms);
                 ms.Position = 0;
-                return new StreamWithDisposables(ms, stream);
+                return ms;
             }
             catch
             {
                 ms.Dispose();
                 throw;
+            }
+            finally
+            {
+                stream.Dispose();
             }
         }
     }

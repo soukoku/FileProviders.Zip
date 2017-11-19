@@ -18,7 +18,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "others", "others", "{363742AA-1CA9-46E1-A916-A86AC973EC49}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		external\icon.png = external\icon.png
 		LICENSE = LICENSE
+		external\notes.md = external\notes.md
 		README.md = README.md
 	EndProjectSection
 EndProject

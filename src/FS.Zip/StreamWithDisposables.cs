@@ -11,8 +11,13 @@ namespace Soukoku.Extensions.FileProviders
     sealed class StreamWithDisposables : Stream
     {
         IDisposable[] _disposables;
-        private Stream _stream;
+        Stream _stream;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StreamWithDisposables"/> class.
+        /// </summary>
+        /// <param name="stream">The stream to warp.</param>
+        /// <param name="disposables">Other disposable objects to track.</param>
         public StreamWithDisposables(Stream stream, params IDisposable[] disposables)
         {
             _stream = stream;
@@ -24,6 +29,7 @@ namespace Soukoku.Extensions.FileProviders
             base.Dispose(disposing);
             if (disposing)
             {
+                _stream.Dispose();
                 foreach (var d in _disposables) { d.Dispose(); }
             }
         }
