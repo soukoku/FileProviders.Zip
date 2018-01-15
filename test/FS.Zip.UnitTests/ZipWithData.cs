@@ -16,7 +16,6 @@ namespace ZipTests
         [Theory]
         public void GetDirectoryContents_Given_Root_Exists_With_Files(string zipData)
         {
-            Assert.True(false, "Test");
             var provider = new ZipFileProvider(zipData);
 
             var result = provider.GetDirectoryContents("/");
