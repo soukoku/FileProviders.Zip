@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.1;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard1.1;netstandard1.3;netstandard2.0</TargetFrameworks>
     <AssemblyName>Soukoku.Extensions.FileProviders.Zip</AssemblyName>
     <RootNamespace>Soukoku.Extensions.FileProviders</RootNamespace>
     <Authors>Soukoku</Authors>
@@ -10,7 +10,7 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/soukoku/FileProviders.Zip/master/LICENSE</PackageLicenseUrl>
     <Product>Zip FileProvider</Product>
     <Description>Allows using zip files as FS provider for aspnet core's static files middleware.</Description>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <PackageTags>files fileprovider</PackageTags>
     <PackageIconUrl>https://github.com/soukoku/FileProviders.Zip/raw/master/external/icon.png</PackageIconUrl>
@@ -22,6 +22,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.3|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.3\Soukoku.Extensions.FileProviders.Zip.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Soukoku.Extensions.FileProviders.Zip.xml</DocumentationFile>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
     <DocumentationFile>bin\Release\net45\Soukoku.Extensions.FileProviders.Zip.xml</DocumentationFile>
   </PropertyGroup>
@@ -32,8 +35,11 @@
   <ItemGroup Condition="'$(TargetFramework)'=='net45'">
     <Reference Include="System.IO.Compression"></Reference>
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'!='netstandard2.0'">
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="1.1.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="2.0.1" />
   </ItemGroup>
 
 </Project>
