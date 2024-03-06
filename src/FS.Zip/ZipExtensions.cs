@@ -27,21 +27,33 @@ namespace Soukoku.Extensions.FileProviders
         /// <param name="archive">The archive.</param>
         /// <returns></returns>
         public static IList<ZipEntryInfo> ReadFolders(this ZipArchive archive, StringComparison comparison)
+        {
             // why need this?, cuz some zip files don't actually have folder entries 
             // (ZipFile.CreateFromDirectory can create this)
             // so always remake them ourselves based on file paths.
-            => archive.Entries
-                .Where(e => e.IsDirectory())
-                .Select(e => new ZipEntryInfo(e))
-                // union real folders entries with calculated folders from files
-                .Union(archive.Entries
-                        .Where(e => !e.IsDirectory())
-                        .Select(e => Path.GetDirectoryName(e.FullName))
-                        .Where(path => !string.IsNullOrEmpty(path))
-                        .Select(p => new ZipEntryInfo(p)))
-                .Distinct(new PhyPathEqualityComparer(comparison))
-                .ToList();
+            
+            var folders =  archive.Entries.Select(entry=>
+            {
+                if (entry.IsDirectory())
+                {
+                    return new ZipEntryInfo(entry);
+                }
+                else
+                {
+                    var parent = Path.GetDirectoryName(entry.FullName.Replace('\\','/'));
+                    if (!string.IsNullOrEmpty(parent))
+                    {
+                        return new ZipEntryInfo(parent);
+                    }
+                }
 
+                return null;
+            }).Where(e=>e!=null)
+            .Distinct(new PhyPathEqualityComparer(comparison))
+            .ToList();
+
+            return folders;
+        }
 
         /// <summary>
         /// Reads only the file entries from the zip archive.

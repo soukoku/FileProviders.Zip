@@ -17,7 +17,7 @@ namespace Soukoku.Extensions.FileProviders
         IList<ZipEntryInfo> _folderEntries;
         StringComparison _comparison;
 
-#if !NETSTD11
+#if NETSTANDARD1_2_OR_GREATER || NET6_0_OR_GREATER
         /// <summary>
         /// Initializes a new instance of the <see cref="ZipFileProvider" /> class.
         /// </summary>
@@ -71,7 +71,8 @@ namespace Soukoku.Extensions.FileProviders
             {
                 var all = archive.ReadFiles()
                                 .Union(_folderEntries);
-                var matchItems = all.Where(entry => string.Equals(Path.GetDirectoryName(entry.PhysicalPath).Replace('\\', '/'), subpath, _comparison))
+                var matchItems = all.Where(entry => 
+                        string.Equals(Path.GetDirectoryName(entry.PhysicalPath).Replace('\\', '/'), subpath, _comparison))
                                 .ToList();
                 return new ZipDirectoryContents(matchItems);
             }

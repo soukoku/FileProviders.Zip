@@ -24,7 +24,7 @@ namespace Soukoku.Extensions.FileProviders
             _isDir = string.IsNullOrEmpty(entry.Name);
             if (_isDir)
             {
-                _path = Path.GetDirectoryName(entry.FullName).Replace('\\', '/');
+                _path = Path.GetDirectoryName(entry.FullName.Replace('\\', '/'));
                 _name = Path.GetFileName(_path);
                 _lenth = -1;
             }
@@ -37,10 +37,12 @@ namespace Soukoku.Extensions.FileProviders
             }
         }
 
-        public ZipEntryInfo(string path)
+        public ZipEntryInfo(string folderPath)
         {
-            _name = Path.GetFileName(_path) ?? string.Empty;
-            _path = path.Replace('\\', '/');
+            _isDir = true;
+            _path = folderPath.Replace('\\', '/');
+            _name = Path.GetFileName(_path);
+            _lenth = -1;
         }
 
         public bool Exists => true;
