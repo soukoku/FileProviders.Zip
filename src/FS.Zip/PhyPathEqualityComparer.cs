@@ -23,16 +23,16 @@ namespace Soukoku.Extensions.FileProviders
 
         public bool Equals(ZipEntryInfo x, ZipEntryInfo y)
         {
-            return string.Equals(x.PhysicalPath, y.PhysicalPath, _comparison);
+            return string.Equals(x.ZipPath, y.ZipPath, _comparison);
         }
 
 
         public int GetHashCode(ZipEntryInfo obj)
         {
             if (_comparison == StringComparison.Ordinal)
-                return obj.PhysicalPath.GetHashCode();
+                return obj.ZipPath.GetHashCode();
 
-            return obj.PhysicalPath.ToUpperInvariant().GetHashCode();
+            return obj.ZipPath.ToUpperInvariant().GetHashCode();
         }
     }
 }

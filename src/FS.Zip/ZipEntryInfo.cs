@@ -11,7 +11,6 @@ namespace Soukoku.Extensions.FileProviders
     /// <seealso cref="Microsoft.Extensions.FileProviders.IFileInfo" />
     class ZipEntryInfo : IFileInfo
     {
-        private string _path;
         private string _name;
         private DateTimeOffset _modified;
         private bool _isDir;
@@ -24,14 +23,14 @@ namespace Soukoku.Extensions.FileProviders
             _isDir = string.IsNullOrEmpty(entry.Name);
             if (_isDir)
             {
-                _path = Path.GetDirectoryName(entry.FullName.Replace('\\', '/'));
-                _name = Path.GetFileName(_path);
+                ZipPath = Path.GetDirectoryName(entry.FullName.Replace('\\', '/'));
+                _name = Path.GetFileName(ZipPath);
                 _lenth = -1;
             }
             else
             {
                 _fileEntry = entry;
-                _path = entry.FullName.Replace('\\', '/');
+                ZipPath = entry.FullName.Replace('\\', '/');
                 _name = entry.Name;
                 _lenth = entry.Length;
             }
@@ -40,8 +39,8 @@ namespace Soukoku.Extensions.FileProviders
         public ZipEntryInfo(string folderPath)
         {
             _isDir = true;
-            _path = folderPath.Replace('\\', '/');
-            _name = Path.GetFileName(_path);
+            ZipPath = folderPath.Replace('\\', '/');
+            _name = Path.GetFileName(ZipPath);
             _lenth = -1;
         }
 
@@ -49,7 +48,12 @@ namespace Soukoku.Extensions.FileProviders
 
         public long Length => _lenth;
 
-        public string PhysicalPath => _path;
+        public string PhysicalPath => null; // _path;
+
+        /// <summary>
+        /// Path of zip entry from root of zip file.
+        /// </summary>
+        public string ZipPath { get; }
 
         public string Name => _name;
 
@@ -72,6 +76,6 @@ namespace Soukoku.Extensions.FileProviders
             }
         }
 
-        public override string ToString() => PhysicalPath;
+        public override string ToString() => $"{(_isDir ? "[Folder]" : "[File]")} {ZipPath}";
     }
 }

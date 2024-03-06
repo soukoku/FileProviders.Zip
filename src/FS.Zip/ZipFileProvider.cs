@@ -61,7 +61,7 @@ namespace Soukoku.Extensions.FileProviders
 
             subpath = subpath.Trim('/');
             var folder = _folderEntries
-                .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, _comparison));
+                .FirstOrDefault(entry => string.Equals(entry.ZipPath, subpath, _comparison));
             if (folder == null && !isRoot)
             {
                 return NotFoundDirectoryContents.Singleton;
@@ -72,7 +72,7 @@ namespace Soukoku.Extensions.FileProviders
                 var all = archive.ReadFiles()
                                 .Union(_folderEntries);
                 var matchItems = all.Where(entry => 
-                        string.Equals(Path.GetDirectoryName(entry.PhysicalPath).Replace('\\', '/'), subpath, _comparison))
+                        string.Equals(Path.GetDirectoryName(entry.ZipPath).Replace('\\', '/'), subpath, _comparison))
                                 .ToList();
                 return new ZipDirectoryContents(matchItems);
             }
@@ -104,7 +104,7 @@ namespace Soukoku.Extensions.FileProviders
             try
             {
                 file = archive.ReadFiles()
-                        .FirstOrDefault(entry => string.Equals(entry.PhysicalPath, subpath, _comparison));
+                        .FirstOrDefault(entry => string.Equals(entry.ZipPath, subpath, _comparison));
             }
             finally
             {

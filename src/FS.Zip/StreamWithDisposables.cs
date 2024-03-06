@@ -10,8 +10,8 @@ namespace Soukoku.Extensions.FileProviders
     /// <seealso cref="System.IO.Stream" />
     sealed class StreamWithDisposables : Stream
     {
-        IDisposable[] _disposables;
-        Stream _stream;
+        readonly IDisposable[] _disposables;
+        readonly Stream _stream;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamWithDisposables"/> class.
