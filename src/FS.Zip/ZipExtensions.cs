@@ -25,6 +25,7 @@ namespace Soukoku.Extensions.FileProviders
         /// Generate all folder entries of a zip archive.
         /// </summary>
         /// <param name="archive">The archive.</param>
+        /// <param name="comparison"></param>
         /// <returns></returns>
         public static IList<ZipEntryInfo> ReadFolders(this ZipArchive archive, StringComparison comparison)
         {

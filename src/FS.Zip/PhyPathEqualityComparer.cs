@@ -6,7 +6,6 @@ namespace Soukoku.Extensions.FileProviders
     /// <summary>
     /// Compares two <see cref="ZipEntryInfo"/> using <see cref="ZipEntryInfo.PhysicalPath"/>.
     /// </summary>
-    /// <seealso cref="System.Collections.Generic.IEqualityComparer{Soukoku.Extensions.FileProviders.ZipEntryInfo}" />
     class PhyPathEqualityComparer : IEqualityComparer<ZipEntryInfo>
     {
         private StringComparison _comparison;
