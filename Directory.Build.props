@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <!--change these in each release-->
-    <VersionPrefix>2.0.0.0</VersionPrefix>
+    <VersionPrefix>2.0.1.0</VersionPrefix>
 <!--    <VersionSuffix>alpha.3</VersionSuffix>-->
     
     <!--keep it the same until major # changes-->
@@ -25,6 +25,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>../../../release-build/strong-name.snk</AssemblyOriginatorKeyFile>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

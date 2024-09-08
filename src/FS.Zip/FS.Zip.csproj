@@ -6,7 +6,12 @@
     <RootNamespace>Soukoku.Extensions.FileProviders</RootNamespace>
     <Product>Zip FileProvider</Product>
     <Description>Allows using zip files as FS provider for aspnet core's static files middleware.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
   
   <ItemGroup Condition="'$(TargetFramework)'=='net462'">
     <Reference Include="System.IO.Compression" />
