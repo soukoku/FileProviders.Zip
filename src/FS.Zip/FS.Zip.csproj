@@ -1,23 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net462;net8.0;net9.0;net10.0</TargetFrameworks>
-    <AssemblyName>Soukoku.Extensions.FileProviders.Zip</AssemblyName>
-    <RootNamespace>Soukoku.Extensions.FileProviders</RootNamespace>
-    <Product>Zip FileProvider</Product>
-    <Description>Allows using zip files as FS provider for aspnet core's static files middleware.</Description>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net462;net8.0;net9.0;net10.0</TargetFrameworks>
+		<AssemblyName>Soukoku.Extensions.FileProviders.Zip</AssemblyName>
+		<RootNamespace>Soukoku.Extensions.FileProviders</RootNamespace>
+		<Product>Zip FileProvider</Product>
+		<Description>Allows using zip files as FS provider for aspnet core's static files middleware.</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="../../README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)'=='net462'">
-    <Reference Include="System.IO.Compression" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="../../README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net462'">
+		<Reference Include="System.IO.Compression" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)'=='net9.0'">
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="9.0.0" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)'=='net10.0'">
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.0" />
+	</ItemGroup>
 
 </Project>

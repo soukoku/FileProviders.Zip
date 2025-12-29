@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <!--change these in each release-->
-    <VersionPrefix>2.0.2.0</VersionPrefix>
+    <VersionPrefix>2.0.3.0</VersionPrefix>
 <!--    <VersionSuffix>alpha.3</VersionSuffix>-->
     
     <!--keep it the same until major # changes-->
